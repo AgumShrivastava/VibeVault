@@ -1,5 +1,5 @@
 
-import type { Product, Collection, PromotionalBannerData, Review } from '@/types';
+import type { Product, Collection, PromotionalBannerData, Review, Category } from '@/types';
 
 const generateReviews = (productId: string): Review[] => {
   const reviewCount = Math.floor(Math.random() * 5) + 1;
@@ -23,7 +23,7 @@ const calculateAverageRating = (reviews?: Review[]): number | undefined => {
   return parseFloat((totalRating / reviews.length).toFixed(1));
 };
 
-const products: Product[] = [
+const products_initial_data: Omit<Product, 'reviews' | 'averageRating'>[] = [
   {
     id: 'cloth-001',
     name: 'Neon Drip Hoodie',
@@ -61,6 +61,21 @@ const products: Product[] = [
     details: { size: 'S, M, L', material: 'Nylon Blend' },
   },
   {
+    id: 'cloth-004',
+    name: 'Digital Camo Tee',
+    description: 'A stylish t-shirt with a modern digital camouflage pattern. Blend in, stand out.',
+    price: 34.99,
+    category: 'clothes',
+    images: [
+      'https://placehold.co/600x800.png',
+      'https://placehold.co/600x800.png'
+    ],
+    stock: 75,
+    tags: ['t-shirt', 'camo', 'streetwear', 'digital'],
+    sku: 'VV-TS-DC-004',
+    details: { size: 'S, M, L, XL', material: '95% Cotton, 5% Spandex' },
+  },
+  {
     id: 'food-001',
     name: 'Spicy Ramen Kit (2 Servings)',
     description: 'Challenge your taste buds with this fiery ramen kit. Includes noodles, broth, and toppings.',
@@ -96,25 +111,27 @@ const products: Product[] = [
     sku: 'VV-FD-BT-003',
     details: { flavorsIncluded: 'Classic Milk Tea, Taro', servings: 'Approx. 5' },
   },
-].map(p => {
+];
+
+const productsWithFullData: Product[] = products_initial_data.map(p => {
   const reviews = generateReviews(p.id);
   return { ...p, reviews, averageRating: calculateAverageRating(reviews) };
 });
 
-export const mockProducts: Product[] = products;
+export const mockProducts: Product[] = productsWithFullData;
 
 export const mockCollections: Collection[] = [
   {
     id: 'col-001',
     title: 'Fresh Drops',
     handle: 'fresh-drops',
-    products: mockProducts.slice(0, 3),
+    products: mockProducts.slice(0, 4), // Increased to show new product if it's at the start or use .filter
   },
   {
     id: 'col-002',
     title: 'Trending Now',
     handle: 'trending-now',
-    products: mockProducts.slice(1, 4).sort(() => 0.5 - Math.random()), // Randomize
+    products: [...mockProducts].sort(() => 0.5 - Math.random()).slice(0, 4), // Ensure enough products for variety
   },
   {
     id: 'col-003',
@@ -129,7 +146,7 @@ export const mockPromotionalBanners: PromotionalBannerData[] = [
     id: 'banner-001',
     title: 'VIBE VAULT IS LIVE!',
     subtitle: 'Your one-stop shop for the freshest gear & munchies. 🚀',
-    imageUrl: 'https://placehold.co/1200x400/121212/39FF14?text=Grand+Opening',
+    imageUrl: 'https://placehold.co/1200x400.png',
     imageHint: "abstract geometric",
     ctaText: 'Explore Now',
     ctaLink: '/products',
@@ -138,7 +155,7 @@ export const mockPromotionalBanners: PromotionalBannerData[] = [
     id: 'banner-002',
     title: 'LEVEL UP YOUR STYLE',
     subtitle: 'Exclusive clothing drops weekly. Don\'t miss out!',
-    imageUrl: 'https://placehold.co/1200x400/121212/8F00FF?text=New+Apparel',
+    imageUrl: 'https://placehold.co/1200x400.png',
     imageHint: "fashion model",
     ctaText: 'Shop Clothes',
     ctaLink: '/products?category=clothes',
