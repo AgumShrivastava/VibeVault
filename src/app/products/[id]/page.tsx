@@ -3,6 +3,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { useParams } from 'next/navigation'; // Import useParams
 import MainLayout from '@/components/layout/main-layout';
 import { getProductById, mockProducts } from '@/lib/mock-data';
 import type { Product, Review } from '@/types';
@@ -17,11 +18,12 @@ import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-interface ProductPageParams {
-  id: string;
-}
+// ProductPageParams interface can be removed as params prop is no longer used directly
 
-const ProductDetailPage = ({ params }: { params: ProductPageParams }) => {
+const ProductDetailPage = () => {
+  const params = useParams<{ id: string }>(); // Use the hook to get route parameters
+  const id = params.id; // Extract id
+
   const { toast } = useToast();
   const [product, setProduct] = useState<Product | null>(null);
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
@@ -35,19 +37,27 @@ const ProductDetailPage = ({ params }: { params: ProductPageParams }) => {
 
 
   useEffect(() => {
-    const fetchedProduct = getProductById(params.id);
-    if (fetchedProduct) {
-      setProduct(fetchedProduct);
-      // Fetch related products (simple logic: same category, not self)
-      setRelatedProducts(
-        mockProducts
-          .filter(p => p.category === fetchedProduct.category && p.id !== fetchedProduct.id)
-          .slice(0, 4)
-      );
+    if (id) { // Check if id is available
+      const fetchedProduct = getProductById(id);
+      if (fetchedProduct) {
+        setProduct(fetchedProduct);
+        // Fetch related products (simple logic: same category, not self)
+        setRelatedProducts(
+          mockProducts
+            .filter(p => p.category === fetchedProduct.category && p.id !== fetchedProduct.id)
+            .slice(0, 4)
+        );
+      } else {
+        setProduct(null); // Product not found
+      }
+    } else {
+      setProduct(null); // ID not available
     }
-  }, [params.id]);
+  }, [id]); // Depend on id from useParams
 
   if (!product) {
+    // This handles both initial loading state (if id isn't immediately resolved, though unlikely for useParams)
+    // and the case where the product is not found after checking.
     return (
       <MainLayout>
         <div className="text-center py-12">
