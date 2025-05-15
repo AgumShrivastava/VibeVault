@@ -3,33 +3,33 @@ import MainLayout from "@/components/layout/main-layout";
 import { AccountSidebarNav } from "@/components/layout/account-sidebar-nav";
 import { Separator } from "@/components/ui/separator";
 import type { NavItem } from "@/types";
-import { User, ShoppingBag, RotateCcw, Settings, LogOut } from "lucide-react";
+// Lucide icons are now handled in AccountSidebarNav (Client Component)
 
 const sidebarNavItems: NavItem[] = [
   {
     label: "Profile",
     href: "/account/profile",
-    icon: User,
+    iconName: "User",
   },
   {
     label: "Orders",
     href: "/account/orders",
-    icon: ShoppingBag,
+    iconName: "ShoppingBag",
   },
   {
     label: "Returns",
     href: "/account/returns",
-    icon: RotateCcw,
+    iconName: "RotateCcw",
   },
   {
     label: "Settings",
     href: "/account/settings",
-    icon: Settings,
+    iconName: "Settings",
   },
    {
     label: "Logout",
     href: "/", // Placeholder for logout functionality
-    icon: LogOut,
+    iconName: "LogOut",
   },
 ];
 

@@ -1,5 +1,5 @@
 
-import type { LucideIcon } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react'; // Keep for other potential uses, or remove if only for NavItem.icon
 
 export type Category = "clothes" | "food";
 
@@ -33,7 +33,7 @@ export interface CartItem extends Product {
 export interface NavItem {
   href: string;
   label: string;
-  icon?: LucideIcon;
+  iconName?: string; // Changed from icon: LucideIcon
   active?: boolean; // For current page highlighting
   children?: NavItem[]; // For sub-menus
 }
