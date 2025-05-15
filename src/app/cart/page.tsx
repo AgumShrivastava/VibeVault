@@ -70,7 +70,7 @@ const CartPage = () => {
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const taxRate = 0.08; // Example tax rate
   const taxes = subtotal * taxRate;
-  const shipping = subtotal > 50 || subtotal === 0 ? 0 : 10; // Free shipping over $50
+  const shipping = subtotal > 50 || subtotal === 0 ? 0 : 10; // Free shipping over ₹50 (assuming 50 is now INR value)
   const total = subtotal + taxes + shipping;
 
   if (isLoading) {
@@ -113,7 +113,7 @@ const CartPage = () => {
                 <Link href={`/products/${item.id}`} className="block">
                     <h2 className="text-lg font-semibold text-foreground hover:text-primary transition-colors">{item.name}</h2>
                 </Link>
-                <p className="text-sm text-muted-foreground">Price: ${item.price.toFixed(2)}</p>
+                <p className="text-sm text-muted-foreground">Price: ₹{item.price.toFixed(2)}</p>
                 <p className="text-sm text-muted-foreground capitalize">Category: {item.category}</p>
               </div>
               <div className="flex items-center gap-2 mt-2 sm:mt-0">
@@ -132,7 +132,7 @@ const CartPage = () => {
                 </Button>
               </div>
               <p className="font-semibold text-lg text-primary sm:ml-4 mt-2 sm:mt-0 whitespace-nowrap">
-                ${(item.price * item.quantity).toFixed(2)}
+                ₹{(item.price * item.quantity).toFixed(2)}
               </p>
               <Button variant="ghost" size="icon" onClick={() => removeItem(item.id)} className="absolute top-2 right-2 text-muted-foreground hover:text-destructive h-8 w-8">
                 <Trash2 className="h-5 w-5" />
@@ -148,20 +148,20 @@ const CartPage = () => {
           <CardContent className="p-0 space-y-3">
             <div className="flex justify-between">
               <span className="text-muted-foreground">Subtotal</span>
-              <span className="font-medium text-foreground">${subtotal.toFixed(2)}</span>
+              <span className="font-medium text-foreground">₹{subtotal.toFixed(2)}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">Shipping</span>
-              <span className="font-medium text-foreground">{shipping === 0 ? "Free" : `$${shipping.toFixed(2)}`}</span>
+              <span className="font-medium text-foreground">{shipping === 0 ? "Free" : `₹${shipping.toFixed(2)}`}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">Taxes ({(taxRate * 100).toFixed(0)}%)</span>
-              <span className="font-medium text-foreground">${taxes.toFixed(2)}</span>
+              <span className="font-medium text-foreground">₹{taxes.toFixed(2)}</span>
             </div>
             <Separator className="my-3" />
             <div className="flex justify-between text-xl font-bold">
               <span className="text-primary">Total</span>
-              <span className="text-primary">${total.toFixed(2)}</span>
+              <span className="text-primary">₹{total.toFixed(2)}</span>
             </div>
             <div className="flex items-center gap-2 pt-2">
               <Input type="text" placeholder="Enter promo code" className="h-10"/>

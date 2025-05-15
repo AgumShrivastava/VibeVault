@@ -34,7 +34,7 @@ const CheckoutPage = () => {
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const taxRate = 0.08; // Example tax rate
   const taxes = subtotal * taxRate;
-  const shippingCost = subtotal > 50 || subtotal === 0 ? 0 : 10;
+  const shippingCost = subtotal > 50 || subtotal === 0 ? 0 : 10; // Assuming 50 is now INR
   const total = subtotal + taxes + shippingCost;
 
   // Form state (simplified)
@@ -45,7 +45,7 @@ const CheckoutPage = () => {
     address: '',
     city: '',
     postalCode: '',
-    country: 'United States',
+    country: 'India', // Default to India
     paymentMethod: 'card', // 'card', 'paypal'
     cardNumber: '',
     expiryDate: '',
@@ -102,11 +102,14 @@ const CheckoutPage = () => {
                 <div><Label htmlFor="address">Address</Label><Input id="address" name="address" placeholder="123 Vibe Street" value={formData.address} onChange={handleInputChange} required /></div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div><Label htmlFor="city">City</Label><Input id="city" name="city" placeholder="Vibeville" value={formData.city} onChange={handleInputChange} required /></div>
-                  <div><Label htmlFor="postalCode">Postal Code</Label><Input id="postalCode" name="postalCode" placeholder="90210" value={formData.postalCode} onChange={handleInputChange} required /></div>
+                  <div><Label htmlFor="postalCode">Postal Code</Label><Input id="postalCode" name="postalCode" placeholder="PIN Code" value={formData.postalCode} onChange={handleInputChange} required /></div>
                   <div>
                     <Label htmlFor="country">Country</Label>
                     <select id="country" name="country" value={formData.country} onChange={handleInputChange} className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background">
-                        <option>United States</option><option>Canada</option><option>United Kingdom</option>
+                        <option>India</option>
+                        <option>United States</option>
+                        <option>Canada</option>
+                        <option>United Kingdom</option>
                     </select>
                   </div>
                 </div>
@@ -121,7 +124,8 @@ const CheckoutPage = () => {
               <AccordionContent className="px-6 pb-6 pt-0 space-y-4">
                 <RadioGroup defaultValue="card" name="paymentMethod" value={formData.paymentMethod} onValueChange={(value) => setFormData(prev => ({...prev, paymentMethod: value}))} className="mb-4">
                   <div className="flex items-center space-x-2 p-3 border rounded-md bg-background"><RadioGroupItem value="card" id="card" /><Label htmlFor="card">Credit/Debit Card</Label></div>
-                  <div className="flex items-center space-x-2 p-3 border rounded-md bg-background"><RadioGroupItem value="paypal" id="paypal" /><Label htmlFor="paypal">PayPal (Unavailable - Demo)</Label></div>
+                  <div className="flex items-center space-x-2 p-3 border rounded-md bg-background"><RadioGroupItem value="upi" id="upi" /><Label htmlFor="upi">UPI (Demo)</Label></div>
+                  <div className="flex items-center space-x-2 p-3 border rounded-md bg-background"><RadioGroupItem value="paypal" id="paypal" disabled /><Label htmlFor="paypal">PayPal (Unavailable)</Label></div>
                 </RadioGroup>
                 {formData.paymentMethod === 'card' && (
                   <>
@@ -130,6 +134,11 @@ const CheckoutPage = () => {
                       <div><Label htmlFor="expiryDate">Expiry Date</Label><Input id="expiryDate" name="expiryDate" placeholder="MM/YY" value={formData.expiryDate} onChange={handleInputChange} /></div>
                       <div><Label htmlFor="cvc">CVC</Label><Input id="cvc" name="cvc" placeholder="•••" value={formData.cvc} onChange={handleInputChange} /></div>
                     </div>
+                  </>
+                )}
+                 {formData.paymentMethod === 'upi' && (
+                  <>
+                    <div><Label htmlFor="upiId">UPI ID</Label><Input id="upiId" name="upiId" placeholder="yourname@okhdfcbank" onChange={handleInputChange} /></div>
                   </>
                 )}
               </AccordionContent>
@@ -152,18 +161,18 @@ const CheckoutPage = () => {
                   <Image src={item.images[0]} alt={item.name} width={40} height={50} className="rounded object-cover aspect-[4/5]" />
                   <div>
                     <p className="text-foreground font-medium">{item.name} <span className="text-xs text-muted-foreground">(x{item.quantity})</span></p>
-                    <p className="text-xs text-muted-foreground">${item.price.toFixed(2)} each</p>
+                    <p className="text-xs text-muted-foreground">₹{item.price.toFixed(2)} each</p>
                   </div>
                 </div>
-                <p className="text-foreground font-medium">${(item.price * item.quantity).toFixed(2)}</p>
+                <p className="text-foreground font-medium">₹{(item.price * item.quantity).toFixed(2)}</p>
               </div>
             ))}
             <Separator className="my-3" />
-            <div className="flex justify-between"><span className="text-muted-foreground">Subtotal</span><span className="font-medium text-foreground">${subtotal.toFixed(2)}</span></div>
-            <div className="flex justify-between"><span className="text-muted-foreground">Shipping</span><span className="font-medium text-foreground">{shippingCost === 0 ? "Free" : `$${shippingCost.toFixed(2)}`}</span></div>
-            <div className="flex justify-between"><span className="text-muted-foreground">Taxes</span><span className="font-medium text-foreground">${taxes.toFixed(2)}</span></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">Subtotal</span><span className="font-medium text-foreground">₹{subtotal.toFixed(2)}</span></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">Shipping</span><span className="font-medium text-foreground">{shippingCost === 0 ? "Free" : `₹${shippingCost.toFixed(2)}`}</span></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">Taxes</span><span className="font-medium text-foreground">₹{taxes.toFixed(2)}</span></div>
             <Separator className="my-3" />
-            <div className="flex justify-between text-xl font-bold"><span className="text-primary">Total</span><span className="text-primary">${total.toFixed(2)}</span></div>
+            <div className="flex justify-between text-xl font-bold"><span className="text-primary">Total</span><span className="text-primary">₹{total.toFixed(2)}</span></div>
           </CardContent>
         </Card>
       </div>

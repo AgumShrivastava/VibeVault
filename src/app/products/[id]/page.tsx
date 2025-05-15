@@ -7,7 +7,7 @@ import MainLayout from '@/components/layout/main-layout';
 import { getProductById, mockProducts } from '@/lib/mock-data';
 import type { Product, Review } from '@/types';
 import { Button } from '@/components/ui/button';
-import { ShoppingCart, ChevronLeft, ChevronRight, ThumbsUp, ThumbsDown } from 'lucide-react';
+import { ShoppingCart, ChevronLeft, ChevronRight, ThumbsUp, ThumbsDown, Star } from 'lucide-react';
 import ReviewStars from '@/components/product/review-stars';
 import ProductCard from '@/components/product/product-card';
 import { Separator } from '@/components/ui/separator';
@@ -171,7 +171,7 @@ const ProductDetailPage = ({ params }: { params: ProductPageParams }) => {
             </div>
           )}
 
-          <p className="text-3xl font-bold text-foreground">${product.price.toFixed(2)}</p>
+          <p className="text-3xl font-bold text-foreground">₹{product.price.toFixed(2)}</p>
           
           <p className="text-muted-foreground leading-relaxed">{product.description}</p>
 
@@ -247,7 +247,7 @@ const ProductDetailPage = ({ params }: { params: ProductPageParams }) => {
                   <div className="flex">
                     {[1,2,3,4,5].map(star => (
                       <Button key={star} type="button" variant="ghost" size="icon" onClick={() => setReviewRating(star)} className={`hover:text-primary ${reviewRating >= star ? 'text-primary' : 'text-muted-foreground'}`}>
-                        <Star fill={reviewRating >= star ? 'currentColor' : 'none'} />
+                        <Star fill={reviewRating >= star ? 'currentColor' : 'none'} className="h-5 w-5" />
                       </Button>
                     ))}
                   </div>

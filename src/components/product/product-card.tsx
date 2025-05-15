@@ -70,7 +70,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         )}
       </CardContent>
       <CardFooter className="p-4 flex flex-col sm:flex-row justify-between items-center gap-2">
-        <p className="text-xl font-bold text-primary">${product.price.toFixed(2)}</p>
+        <p className="text-xl font-bold text-primary">₹{product.price.toFixed(2)}</p>
         <div className="flex gap-2">
           <Button variant="outline" size="sm" asChild className="hover:border-primary hover:text-primary">
              <Link href={`/products/${product.id}`}>

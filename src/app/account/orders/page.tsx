@@ -120,7 +120,7 @@ export default function OrdersPage() {
                 <TableCell>
                   <Badge variant={getStatusBadgeVariant(order.status)}>{order.status}</Badge>
                 </TableCell>
-                <TableCell className="text-right">${order.total.toFixed(2)}</TableCell>
+                <TableCell className="text-right">₹{order.total.toFixed(2)}</TableCell>
                 <TableCell className="text-right">
                   <Button variant="ghost" size="sm" asChild className="hover:text-primary">
                     {/* This would link to a specific order detail page */}
